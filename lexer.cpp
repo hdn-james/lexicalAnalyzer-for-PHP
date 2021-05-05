@@ -33,6 +33,9 @@ string reserved[] = {
 
 void Token::Print()
 {
+    if (this->token_type == COMMENT)
+        return;
+
     cout
         << "{" << this->lexeme << " , "
         << reserved[(int)this->token_type] << " , "
@@ -230,7 +233,28 @@ Token LexicalAnalyzer::getToken()
         input.GetChar(c);
         if (c == '/')
         {
+            while (c != '\n')
+                input.GetChar(c);
             tmp.token_type = COMMENT;
+            return tmp;
+        }
+        if (c == '*')
+        {
+            input.GetChar(c);
+            while (true)
+            {
+                while (c != '*')
+                {
+                    input.GetChar(c);
+                }
+                input.GetChar(c);
+                if (c == '/')
+                    break;
+                else
+                    input.GetChar(c);
+            }
+            tmp.token_type = COMMENT;
+            return tmp;
         }
         else
         {
@@ -321,6 +345,7 @@ Token LexicalAnalyzer::getToken()
 
         return tmp;
     }
+    return tmp;
 }
 
 Token LexicalAnalyzer::scanNumber()

@@ -16,4 +16,4 @@ static switch throw try use var while yield from return
 , . ? : () [] {}
 
 // comment
-/* comment */
+/* comme*nt */
